@@ -83,7 +83,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex">
-            <Sidebar className="w-[16rem]" />
+            <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0"/>
             <div className="flex flex-col w-full mt-2 px-12 gap-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold">Dashboard</h1>
