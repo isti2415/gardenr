@@ -19,7 +19,7 @@ export default function App({ Component, pageProps }) {
         enableSystem
         disableTransitionOnChange
       >
-        <div className="fixed bottom-4 left-4 z-10">
+        <div className="fixed bottom-4 left-4 z-20">
           <ModeToggle />
         </div>
         <Toaster />

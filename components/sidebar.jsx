@@ -68,13 +68,13 @@ export function Sidebar({ className }) {
 
     return (
         <>
-            <div className="fixed top-6 left-6 z-10">
+            <div className="fixed top-6 left-6 z-20">
                 <MenuIcon
                     className="h-6 w-6 cursor-pointer"
                     onClick={toggleSidebar}
                 />
             </div>
-            <div className={`pb-12 h-screen ${isOpen ? 'ml-0 transition-all' : '-ml-64 transition-all'} ${cn(className)}`}>
+            <div className={`pb-12 h-screen z-10 ${isOpen ? 'ml-0 transition-all' : '-ml-64 transition-all'} ${cn(className)}`}>
                 <div className="space-y-4 py-4 mt-14">
                     <div className="px-3 py-2">
                         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
