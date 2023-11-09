@@ -183,10 +183,10 @@ const Dashboard = ({ initialTip }) => {
 
   return (
     <div className="flex">
-      <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0" />
-      <div className="flex flex-col w-full mt-2 gap-4 px-4">
+      <Sidebar className="w-[16rem] bg-background left-0 top-0" />
+      <div className="flex flex-col w-screen mt-4 gap-4 px-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-8 lg:ml-0">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">
             Dashboard
           </h1>
           <Dialog>
@@ -262,19 +262,6 @@ const Dashboard = ({ initialTip }) => {
         <div className="grid md:grid-cols-2 gap-4 md:gap-8">
           <div className="flex flex-col">
             <h1 className="text-lg md:text-xl lg:text-2xl font-bold my-4">
-              Tip of the day
-            </h1>
-            <Card className="h-full">
-              <CardHeader className="gap-4">
-                <CardTitle>{randomTip.title}</CardTitle>
-                <CardDescription className="text-xl">
-                  {randomTip.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
-          <div className="flex flex-col">
-            <h1 className="text-lg md:text-xl lg:text-2xl font-bold my-4">
               Weather
             </h1>
             <Card>
@@ -302,6 +289,19 @@ const Dashboard = ({ initialTip }) => {
                     </div>
                   </div>
                 </CardTitle>
+              </CardHeader>
+            </Card>
+          </div>
+          <div className="flex flex-col">
+            <h1 className="text-lg md:text-xl lg:text-2xl font-bold my-4">
+              Tip of the day
+            </h1>
+            <Card className="h-full">
+              <CardHeader className="gap-4">
+                <CardTitle>{randomTip.title}</CardTitle>
+                <CardDescription className="text-xl">
+                  {randomTip.description}
+                </CardDescription>
               </CardHeader>
             </Card>
           </div>
@@ -336,7 +336,7 @@ const Dashboard = ({ initialTip }) => {
       </div>
     </div>
   );
-}
+};
 
 export async function getServerSideProps() {
   // Generate a random tip on the server
