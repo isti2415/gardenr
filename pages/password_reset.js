@@ -8,22 +8,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
-import { RotateCcw, TimerReset, UserCheck, UserPlus } from "lucide-react";
+import { LogIn, RotateCcw, UserPlus } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { ToastAction } from "@/components/ui/toast";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from "@/components/ui/dialog";
 import Head from "next/head";
 import Logo from "@/components/logo";
 
 function UserAuthForm(props) {
-  const { toast } = useToast();
   const router = useRouter();
   const supabase = useSupabaseClient();
   const user = useUser();
@@ -36,10 +27,10 @@ function UserAuthForm(props) {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    const { error } = await supabase.auth.updateUser({
+        email,
+        password,
+     });
 
     if (error) {
       toast({
@@ -49,7 +40,7 @@ function UserAuthForm(props) {
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     } else {
-      router.push("/dashboard");
+      router.push("/login");
       console.log(error);
     }
 
@@ -60,21 +51,19 @@ function UserAuthForm(props) {
     <div className="grid gap-6" {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
-          <div className="grid gap-4">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              name="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
+          <Label className="sr-only" htmlFor="email">
+            Email
+          </Label>
+          <Input
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+            type="email"
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
           <Label className="sr-only" htmlFor="password">
             Password
           </Label>
@@ -89,8 +78,8 @@ function UserAuthForm(props) {
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            <UserCheck className="mr-2" />
-            Log in
+            <RotateCcw className="mr-2" />
+            Reset Password
           </Button>
         </div>
       </form>
@@ -98,44 +87,22 @@ function UserAuthForm(props) {
   );
 }
 
-export default function Login() {
-  const supabase = useSupabaseClient();
-
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  async function handleReset(event) {
-    setIsLoading(true);
-
-    const email = event.target.reset_email.value;
-
-    const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: "https://gardenr.vercel.app/password_reset",
-    });
-
-    if (error) {
-      console.log(error);
-    } else {
-      console.log("Success!");
-    }
-
-    setIsLoading(false);
-  }
-
+export default function Password_Reset() {
   return (
     <>
       <Head>
-        <title>GardenR - Login</title>
+        <title>GardenR - Reset Password</title>
       </Head>
       <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
-          href="./signup"
+          href="./login"
           className={cn(
             buttonVariants({ variant: "ghost" }),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
-          <UserPlus className="mr-2" />
-          Create an account
+          <LogIn className="mr-2" />
+          Login
         </Link>
         <div className="hidden lg:block relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
@@ -158,10 +125,10 @@ export default function Login() {
             <div className="flex flex-col space-y-2 text-center">
               <Logo />
               <h1 className="text-2xl font-semibold tracking-tight">
-                Log in to the account
+                Reset Password
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your email and password
+                Enter your email and a new password below to reset your password
               </p>
             </div>
             <div className="max-w-lg">
@@ -170,37 +137,21 @@ export default function Login() {
               <UserAuthForm />
             </div>
             <p className="px-8 text-center text-sm text-muted-foreground">
-              Forgot your password?{" "}
-              <Dialog>
-                <DialogTrigger asChild>
-                  <Button variant="ghost" size="small">
-                    Reset it here.
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px]">
-                  <DialogHeader>
-                    <DialogTitle>Reset Password</DialogTitle>
-                  </DialogHeader>
-                  <form onSubmit={handleReset}>
-                      <Input
-                        id="reset_email"
-                        name="reset_email"
-                        placeholder="Email to reset password"
-                        type="email"
-                        disabled={isLoading}
-                      />
-                    <DialogFooter>
-                      <Button disabled={isLoading} type="submit" className="mt-4">
-                        {isLoading && (
-                          <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                        )}
-                        <RotateCcw className="mr-2" />
-                        Reset Password
-                      </Button>
-                    </DialogFooter>
-                  </form>
-                </DialogContent>
-              </Dialog>
+              By clicking continue, you agree to our{" "}
+              <Link
+                href="/terms"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Terms of Service
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/privacy"
+                className="underline underline-offset-4 hover:text-primary"
+              >
+                Privacy Policy
+              </Link>
+              .
             </p>
           </div>
         </div>

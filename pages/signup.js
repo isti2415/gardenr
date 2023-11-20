@@ -74,6 +74,7 @@ function UserAuthForm(props) {
             id="password"
             name="password"
             type="password"
+            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;"
             disabled={isLoading}
           />
           <Button disabled={isLoading} type="submit">
