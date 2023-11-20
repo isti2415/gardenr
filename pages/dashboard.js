@@ -232,7 +232,7 @@ const Dashboard = ({ initialTip }) => {
                   />
                 </div>
                 <DialogFooter>
-                  <Button disabled={isLoading} type="submit">
+                  <Button disabled={isLoading} type="submit" className="mt-4">
                     {isLoading && (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                     )}
