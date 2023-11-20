@@ -28,6 +28,7 @@ import { weatherIconMappings } from "@/components/iconMap";
 import Image from "next/image";
 import Link from "next/link";
 import { getRandomTip } from "@/components/tips";
+import Head from "next/head";
 
 const Dashboard = ({ initialTip }) => {
   const [devices, setDevices] = useState([]);
@@ -183,8 +184,11 @@ const Dashboard = ({ initialTip }) => {
 
   return (
     <div className="flex">
+      <Head>
+        <title>GardenR - Dashboard</title>
+      </Head>
       <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0" />
-      <div className="flex flex-col w-screen mt-4 gap-4 px-4">
+      <div className="flex flex-col w-screen mt-4 gap-4 px-4 pb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">
             Dashboard
@@ -281,7 +285,7 @@ const Dashboard = ({ initialTip }) => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div className="relative invert-0 dark:invert h-12 w-12">
-                          <Image fill src={`/icons/wi-${iconName}.svg`} />
+                          <Image fill src={`/icons/wi-${iconName}.svg`} alt="Weather Icon" />
                         </div>
                         <div>{description}</div>
                       </div>

@@ -4,6 +4,7 @@ import { RefreshCcw } from "lucide-react";
 import { Table, TableBody, TableCell, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useEffect, useState } from "react";
+import Head from "next/head";
 
 const Notifications = () => {
 
@@ -36,7 +37,10 @@ const Notifications = () => {
 
   return (
     <div className="flex">
-      <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0" />
+      <Head>
+        <title>GardenR - Notifications</title>
+      </Head>
+      <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0 pb-8" />
       <div className="flex flex-col w-screen mt-4 gap-4 px-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">
@@ -44,7 +48,7 @@ const Notifications = () => {
           </h1>
           <div>
             <Button>
-              <RefreshCcw />
+              <RefreshCcw className="mr-2" />
               Reload
             </Button>
           </div>

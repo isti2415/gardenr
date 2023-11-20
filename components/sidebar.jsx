@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Logo from "./logo";
 
 export function Sidebar({ className }) {
 
@@ -30,7 +31,7 @@ export function Sidebar({ className }) {
             const { data, error } = await supabase
                 .from('Device_Users')
                 .select('device')
-                .eq('user', user?.id);
+                .eq('user', user.id);
 
             if (error) {
                 throw error;
@@ -76,6 +77,7 @@ export function Sidebar({ className }) {
             </div>
             <div className={`pb-12 h-screen z-10 ${isOpen ? 'ml-0 transition-all' : '-ml-64 transition-all'} ${cn(className)}`}>
                 <div className="space-y-4 py-4 mt-14">
+                    <Logo />
                     <div className="px-3 py-2">
                         <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">
                             General
@@ -101,10 +103,12 @@ export function Sidebar({ className }) {
                         </h2>
                         <div className="space-y-1">
                             {devices.map((device) => (
-                                <Button key={device} variant="ghost" className="w-full justify-start">
-                                    <Radio className="mr-2 h-4 w-4" />
-                                    {device.device}
-                                </Button>
+                                <Link href={`/device/${device.device}`} key={device.device}>
+                                    <Button variant="ghost" className="w-full justify-start">
+                                        <Radio className="mr-2 h-4 w-4" />
+                                        {device.device}
+                                    </Button>
+                                </Link>
                             ))}
                         </div>
                     </div>

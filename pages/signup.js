@@ -9,6 +9,10 @@ import { Label } from "@/components/ui/label";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import { LogIn, UserPlus } from "lucide-react";
+import { useToast } from "@/components/ui/use-toast";
+import { ToastAction } from "@/components/ui/toast";
+import Head from "next/head";
+import Logo from "@/components/logo";
 
 function UserAuthForm(props) {
   const router = useRouter();
@@ -88,6 +92,9 @@ function UserAuthForm(props) {
 export default function Signup() {
   return (
     <>
+      <Head>
+        <title>GardenR - Sign Up</title>
+      </Head>
       <div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <Link
           href="./login"
@@ -101,8 +108,8 @@ export default function Signup() {
         </Link>
         <div className="hidden lg:block relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
-          <div className="relative z-20 flex items-center text-lg font-medium">
-            GardenR
+          <div className="relative z-20 flex items-center">
+            <Logo />
           </div>
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
@@ -118,6 +125,7 @@ export default function Signup() {
         <div className="lg:p-8 h-screen flex items-center justify-center">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
+              <Logo />
               <h1 className="text-2xl font-semibold tracking-tight">
                 Create an account
               </h1>

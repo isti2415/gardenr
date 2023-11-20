@@ -5,7 +5,12 @@ import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
 import { SessionContextProvider } from '@supabase/auth-helpers-react'
 import { useState } from 'react'
 import { Toaster } from '@/components/ui/toaster'
+import { Urbanist } from '@next/font/google'
 
+const urbanist = Urbanist({
+  subsets: ['latin'],
+  variable: '--font-urbanist'
+})
 
 export default function App({ Component, pageProps }) {
 
@@ -19,11 +24,13 @@ export default function App({ Component, pageProps }) {
         enableSystem
         disableTransitionOnChange
       >
-        <div className="fixed bottom-4 left-4 z-20">
-          <ModeToggle />
-        </div>
-        <Toaster />
-        <Component {...pageProps} />
+        <main className={`${urbanist.variable} font-sans scroll-smooth`}>
+          <div className="fixed bottom-4 left-4 z-20">
+            <ModeToggle />
+          </div>
+          <Toaster />
+          <Component {...pageProps} className="font-sans" />
+        </main>
       </ThemeProvider>
     </SessionContextProvider>
   )
