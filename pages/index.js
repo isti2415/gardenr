@@ -15,6 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Logo from "@/components/logo";
+import Head from "next/head";
 
 
 export default function Home() {
