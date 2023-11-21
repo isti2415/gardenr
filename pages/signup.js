@@ -24,6 +24,7 @@ function UserAuthForm(props) {
     event.preventDefault();
     setIsLoading(true);
 
+    const name = event.target.name.value;
     const email = event.target.email.value;
     const password = event.target.password.value;
 
@@ -31,6 +32,7 @@ function UserAuthForm(props) {
       email,
       password,
       options: {
+        data: { name: name },
         emailRedirectTo: "https://gardenr.vercel.app/login",
       },
     });
@@ -54,6 +56,19 @@ function UserAuthForm(props) {
     <div className="grid gap-6" {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
+          <Label className="sr-only" htmlFor="name">
+            Name
+          </Label>
+          <Input
+            id="name"
+            name="name"
+            placeholder="Your Full Name"
+            type="text"
+            autoCapitalize="none"
+            autoComplete="name"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
           <Label className="sr-only" htmlFor="email">
             Email
           </Label>

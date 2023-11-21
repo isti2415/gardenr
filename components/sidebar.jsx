@@ -104,7 +104,7 @@ export function Sidebar({ className }) {
                         <div className="space-y-1">
                             {devices.map((device) => (
                                 <Link href={`/device/${device.device}`} key={device.device}>
-                                    <Button variant="ghost" className="w-full justify-start">
+                                    <Button variant={active === `/device/${device.device}` ? 'secondary' : 'ghost'} className="w-full justify-start">
                                         <Radio className="mr-2 h-4 w-4" />
                                         {device.device}
                                     </Button>
@@ -117,10 +117,10 @@ export function Sidebar({ className }) {
                             Profile
                         </h2>
                         <div className="space-y-1">
-                            <Button variant="ghost" className="w-full justify-start" asChild>
-                                <Link href="/account">
+                            <Button variant={active === '/profile' ? 'secondary' : 'ghost'} className="w-full justify-start" asChild>
+                                <Link href="/profile">
                                     <User className="mr-2 h-4 w-4" />
-                                    Account
+                                    Profile
                                 </Link>
                             </Button>
                             <Button variant="ghost" className="w-full justify-start hover:bg-destructive" onClick={logout}>

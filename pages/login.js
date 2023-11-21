@@ -60,21 +60,19 @@ function UserAuthForm(props) {
     <div className="grid gap-6" {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
-          <div className="grid gap-4">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              name="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
+          <Label className="sr-only" htmlFor="email">
+            Email
+          </Label>
+          <Input
+            id="email"
+            name="email"
+            placeholder="name@example.com"
+            type="email"
+            autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect="off"
+            disabled={isLoading}
+          />
           <Label className="sr-only" htmlFor="password">
             Password
           </Label>
@@ -182,13 +180,13 @@ export default function Login() {
                     <DialogTitle>Reset Password</DialogTitle>
                   </DialogHeader>
                   <form onSubmit={handleReset}>
-                      <Input
-                        id="reset_email"
-                        name="reset_email"
-                        placeholder="Email to reset password"
-                        type="email"
-                        disabled={isLoading}
-                      />
+                    <Input
+                      id="reset_email"
+                      name="reset_email"
+                      placeholder="Email to reset password"
+                      type="email"
+                      disabled={isLoading}
+                    />
                     <DialogFooter>
                       <Button disabled={isLoading} type="submit" className="mt-4">
                         {isLoading && (
