@@ -81,11 +81,11 @@ export default function Profile() {
                     </h1>
                 </div>
                 <div className="grid gap-4 w-full flex items-center mx-auto">
-                    <form onSubmit={updateName}>
+                    <form onSubmit={updateName} className='grid gap-4'>
                         <Label>
                             Name
                         </Label>
-                        <div className='flex items-center gap-2'>
+                        <div className='flex flex-col lg:flex-row items-center gap-4'>
                             <Input
                                 id="name"
                                 name="name"
@@ -115,11 +115,11 @@ export default function Profile() {
                         placeholder={user?.email}
                         disabled
                     />
-                    <form onSubmit={updatePassword}>
+                    <form onSubmit={updatePassword} className='grid gap-4'>
                         <Label>
                             Password
                         </Label>
-                        <div className='flex items-center gap-2'>
+                        <div className='flex items-center gap-4 flex-col lg:flex-row '>
                             <Input
                                 id="password"
                                 name="password"
