@@ -27,19 +27,21 @@ import axios from "axios";
 import { weatherIconMappings } from "@/components/iconMap";
 import Image from "next/image";
 import Link from "next/link";
-import { getRandomTip } from "@/components/tips";
 import Head from "next/head";
+import { ChatBot } from "@/app/chat";
 
-const Dashboard = ({ initialTip }) => {
+const Dashboard = () => {
   const [devices, setDevices] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
+
+  const [randomTip, setRandomTip] = useState("");
 
   const supabase = useSupabaseClient();
 
   const user = useUser();
 
-  const randomTip = initialTip || getRandomTip();
+  async function getRandomTip() {}
 
   const getDevices = async () => {
     try {
@@ -60,6 +62,7 @@ const Dashboard = ({ initialTip }) => {
 
   useEffect(() => {
     getDevices();
+    getRandomTip();
   }, [user, supabase]);
 
   async function addDevice(event) {
@@ -183,11 +186,14 @@ const Dashboard = ({ initialTip }) => {
   const { temperature, description, iconName, humidity, city } = Weather();
 
   return (
-    <div className="flex">
+    <div className="flex mb-16">
       <Head>
         <title>GardenR - Dashboard</title>
       </Head>
       <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0" />
+      <div className="fixed bottom-4 right-4 z-20">
+        <ChatBot />
+      </div>
       <div className="flex flex-col w-screen mt-4 gap-4 px-4 pb-8">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">
@@ -285,7 +291,12 @@ const Dashboard = ({ initialTip }) => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center">
                         <div className="relative invert-0 dark:invert h-12 w-12">
-                          <Image fill src={`/icons/wi-${iconName}.svg`} alt="Weather Icon" />
+                          <Image
+                            fill
+                            src={`/icons/wi-${iconName}.svg`}
+                            alt="Weather Icon"
+                            unoptimized
+                          />
                         </div>
                         <div>{description}</div>
                       </div>
@@ -302,7 +313,6 @@ const Dashboard = ({ initialTip }) => {
             </h1>
             <Card className="h-full">
               <CardHeader className="gap-4">
-                <CardTitle>{randomTip.title}</CardTitle>
                 <CardDescription className="text-xl">
                   {randomTip.description}
                 </CardDescription>
@@ -341,13 +351,5 @@ const Dashboard = ({ initialTip }) => {
     </div>
   );
 };
-
-export async function getServerSideProps() {
-  // Generate a random tip on the server
-  const initialTip = getRandomTip();
-
-  // Pass the initialTip as a prop to the page
-  return { props: { initialTip } };
-}
 
 export default Dashboard;

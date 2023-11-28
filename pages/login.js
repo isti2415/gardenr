@@ -172,7 +172,7 @@ export default function Login() {
               <Dialog>
                 <DialogTrigger asChild>
                   <Button variant="ghost" size="small">
-                    Reset it here.
+                    <span className="font-bold underline">Reset it here.</span>
                   </Button>
                 </DialogTrigger>
                 <DialogContent className="sm:max-w-[425px]">
@@ -188,7 +188,11 @@ export default function Login() {
                       disabled={isLoading}
                     />
                     <DialogFooter>
-                      <Button disabled={isLoading} type="submit" className="mt-4">
+                      <Button
+                        disabled={isLoading}
+                        type="submit"
+                        className="mt-4"
+                      >
                         {isLoading && (
                           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                         )}

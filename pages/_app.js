@@ -1,23 +1,25 @@
-import { ThemeProvider } from '@/components/theme-provider'
-import { ModeToggle } from '@/components/theme-toggle-btn'
-import '@/styles/globals.css'
-import { createPagesBrowserClient } from '@supabase/auth-helpers-nextjs'
-import { SessionContextProvider } from '@supabase/auth-helpers-react'
-import { useState } from 'react'
-import { Toaster } from '@/components/ui/toaster'
-import { Urbanist } from '@next/font/google'
+import { ThemeProvider } from "@/components/theme-provider";
+import { ModeToggle } from "@/components/theme-toggle-btn";
+import "@/styles/globals.css";
+import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { useState } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Urbanist } from "next/font/google";
 
 const urbanist = Urbanist({
-  subsets: ['latin'],
-  variable: '--font-urbanist'
-})
+  subsets: ["latin"],
+  variable: "--font-urbanist",
+});
 
 export default function App({ Component, pageProps }) {
-
-  const [supabaseClient] = useState(() => createPagesBrowserClient())
+  const [supabaseClient] = useState(() => createPagesBrowserClient());
 
   return (
-    <SessionContextProvider supabaseClient={supabaseClient} initialSession={pageProps.initialSession}>
+    <SessionContextProvider
+      supabaseClient={supabaseClient}
+      initialSession={pageProps.initialSession}
+    >
       <ThemeProvider
         attribute="class"
         defaultTheme="system"
@@ -33,5 +35,5 @@ export default function App({ Component, pageProps }) {
         </main>
       </ThemeProvider>
     </SessionContextProvider>
-  )
+  );
 }
