@@ -6,8 +6,11 @@
   "server": {
     "androidScheme": "https",
     "cleartext": true,
-    "allowNavigation": [
-      "https://gardenr.vercel.app/api/*"
-    ]
+    "allowNavigation": ["https://gardenr.vercel.app/api/*"]
+  },
+  "plugins": {
+    "CapacitorHttp": {
+      "enabled": true
+    }
   }
 }
