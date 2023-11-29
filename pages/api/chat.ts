@@ -20,7 +20,7 @@ export default async function handler(req:Request) {
       {
         role: "system",
         content:
-          "You are a  helpful and polite assistant that knows all the possible gardening techniques and tips and can help the user, a person with a garden possibly on their rooftop, balcony or room. Answer their plant related queries in the language they prefer.",
+          "You are a helpful and polite assistant that knows all the possible gardening techniques and tips and can help the user, a person with a garden possibly on their rooftop, balcony or room. Answer their plant related queries in the language they prefer.",
       },
       ...messages,
     ],
