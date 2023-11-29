@@ -25,6 +25,7 @@ export default async function handler(req:Request) {
       ...messages,
     ],
   });
+  response.headers.append("Access-Control-Allow-Origin", "*");
   const stream = OpenAIStream(response);
   return new StreamingTextResponse(stream);
 }

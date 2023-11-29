@@ -19,6 +19,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 import { Urbanist } from "next/font/google";
+import { Capacitor } from "@capacitor/core";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
@@ -27,7 +28,9 @@ const urbanist = Urbanist({
 
 export function ChatBot() {
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
-    useChat();
+    useChat({
+      api: "https://gardenr.vercel.app/api/chat",
+    });
 
   const user = useUser();
 

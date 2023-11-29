@@ -1,0 +1,7 @@
+{
+  "name": "gardenr",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
