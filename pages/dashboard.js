@@ -19,7 +19,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { Bell, Eye, Plus, Terminal, UserCheck } from "lucide-react";
+import { Bell, Eye, Plus, RefreshCcw, Terminal, UserCheck } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Icons } from "@/components/ui/icons";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -28,7 +28,8 @@ import { weatherIconMappings } from "@/components/iconMap";
 import Image from "next/image";
 import Link from "next/link";
 import Head from "next/head";
-import { ChatBot } from "@/app/chat";
+import { ChatBot } from "@/components/chat";
+import OpenAI from "openai";
 
 const Dashboard = () => {
   const [devices, setDevices] = useState([]);
@@ -41,7 +42,21 @@ const Dashboard = () => {
 
   const user = useUser();
 
-  async function getRandomTip() {}
+  const openai = new OpenAI({
+    apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
+    dangerouslyAllowBrowser: true,
+  });
+
+  async function getRandomTip() {
+    const completion = await openai.completions.create({
+      model: "gpt-3.5-turbo-instruct",
+      prompt:
+        `Generate a random gardening tip suitable for home, rooftop, or balcony gardening. Ensure that the tip is concise, providing valuable information related to plant selection, care, or innovative gardening techniques. Avoid repetition by checking previously generated tips to guarantee variety. Present the tip in a clear and standalone format, without any additional text or context. Aim for a tip that caters to different aspects of gardening, such as plant health, space optimization, or pest management. Keep the language simple and accessible, ensuring that the tips are easily understandable for a wide audience interested in home gardening. Do not wrap your response with "" or quotation marks.`,
+      max_tokens: 128,
+      });
+    console.log(completion);
+    setRandomTip(completion.choices[0].text);
+  }
 
   const getDevices = async () => {
     try {
@@ -314,7 +329,7 @@ const Dashboard = () => {
             <Card className="h-full">
               <CardHeader className="gap-4">
                 <CardDescription className="text-xl">
-                  {randomTip.description}
+                  {randomTip}
                 </CardDescription>
               </CardHeader>
             </Card>

@@ -15,27 +15,43 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Textarea } from "@/components/ui/textarea";
 import { Separator } from "@/components/ui/separator";
 import { useChat } from "ai/react";
-import { Card, CardContent, CardHeader } from "./ui/card";
 import { useUser } from "@supabase/auth-helpers-react";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+import { Urbanist } from "next/font/google";
+
+const urbanist = Urbanist({
+  subsets: ["latin"],
+  variable: "--font-urbanist",
+});
 
 export function ChatBot() {
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
-    useChat({ api: "/api/chat" });
-
-  console.log(messages);
-  console.log(input);
+    useChat();
 
   const user = useUser();
+
+  if (messages.length === 0) {
+    messages.push({
+      content: "Hi, I am GardenR AI. Ask me all your gardening questions",
+      role: "assistant",
+    });
+  }
 
   return (
     <Sheet>
       <SheetTrigger>
-        <div className="flex items-center justify-center">
+        <div
+          className={cn(
+            buttonVariants({ variant: "outline" }),
+            "flex items-center justify-center"
+          )}
+        >
           <span>GardenR AI</span>
           <Bot className="ml-2" />
         </div>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className={urbanist.className}>
         <SheetHeader>
           <SheetTitle>Chat with GardenR AI</SheetTitle>
           <SheetDescription>Ask all your gardening questions</SheetDescription>
@@ -50,7 +66,7 @@ export function ChatBot() {
                 </Avatar>
               )}
               {message.role === "assistant" && (
-                <Avatar>
+                <Avatar className="dark:bg-foreground bg-background">
                   <AvatarImage src="/ai.svg" />
                   <AvatarFallback>GardenR AI</AvatarFallback>
                 </Avatar>
@@ -60,7 +76,13 @@ export function ChatBot() {
                   {message.role === "user" && user?.user_metadata.name}
                   {message.role === "assistant" && "GardenR AI"}
                 </span>
-                {message.content}
+                {message.content.split("\n").map((currentTextBlock, index) => {
+                  if (currentTextBlock === "") {
+                    return <p key={message.id + index}>&nbsp;</p>;
+                  } else {
+                    return <p key={message.id + index}>{currentTextBlock}</p>;
+                  }
+                })}
               </p>
             </div>
           ))}
