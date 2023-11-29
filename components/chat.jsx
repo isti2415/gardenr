@@ -29,10 +29,12 @@ const urbanist = Urbanist({
 export function ChatBot() {
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
     useChat({
-      api: Capacitor.isNative
-        ? "https://gardenr.vercel.app/api/chat"
-        : "/api/chat",
+      api: Capacitor.getPlatform() === "web"
+        ? "/api/chat"
+        : "https://gardenr.vercel.app/api/chat",
     });
+
+    console.log(Capacitor.getPlatform());
 
   const user = useUser();
 
@@ -76,7 +78,7 @@ export function ChatBot() {
                   <AvatarFallback>GardenR AI</AvatarFallback>
                 </Avatar>
               )}
-              <p className="leading-relaxed">
+              <div className="leading-relaxed">
                 <span className="block font-bold">
                   {message.role === "user" && user?.user_metadata.name}
                   {message.role === "assistant" && "GardenR AI"}
@@ -88,7 +90,7 @@ export function ChatBot() {
                     return <p key={message.id + index}>{currentTextBlock}</p>;
                   }
                 })}
-              </p>
+              </div>
             </div>
           ))}
         </ScrollArea>
