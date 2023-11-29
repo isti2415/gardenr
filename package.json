@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "ionic:build": "npm run build",
+    "ionic:build": "npm run static",
     "ionic:serve": "npm run start"
   },
   "dependencies": {
