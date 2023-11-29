@@ -29,7 +29,9 @@ const urbanist = Urbanist({
 export function ChatBot() {
   const { input, handleInputChange, handleSubmit, isLoading, messages } =
     useChat({
-      api: "https://gardenr.vercel.app/api/chat"
+      api: Capacitor.isNative
+        ? "https://gardenr.vercel.app/api/chat"
+        : "/api/chat",
     });
 
   const user = useUser();
