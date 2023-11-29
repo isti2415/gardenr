@@ -4,6 +4,10 @@
   "webDir": "out",
   "bundledWebRuntime": false,
   "server": {
-    "androidScheme": "https"
+    "androidScheme": "https",
+    "cleartext": true,
+    "allowNavigation": [
+      "https://gardenr.vercel.app/api/*"
+    ]
   }
 }
