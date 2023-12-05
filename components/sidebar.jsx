@@ -16,16 +16,11 @@ import Logo from "./logo";
 
 export function Sidebar({ className }) {
   const router = useRouter();
-
   const supabase = useSupabaseClient();
-
   const user = useUser();
-
   const [devices, setDevices] = useState([]);
-
-  const [active, setActive] = useState(null);
-
   const [isOpen, setIsOpen] = useState(false);
+  const [active, setActive] = useState(null);
 
   const logout = () => {
     supabase.auth.signOut();
@@ -44,29 +39,38 @@ export function Sidebar({ className }) {
       }
       setDevices(data);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   useEffect(() => {
-    getDevices();
-
-    setActive(window.location.pathname);
-
-    const setInitialWidth = () => {
-      setIsOpen(window.innerWidth > 1024);
+    const updateActiveState = () => {
+      // Perform logic to update active state
     };
 
-    setInitialWidth(); // Set initial width
+    const setInitialWidth = () => setIsOpen(window.innerWidth > 1024);
 
-    // Set resize listener to update width
+    setInitialWidth();
     window.addEventListener("resize", setInitialWidth);
 
-    // Clean up the listener on component unmount
     return () => {
       window.removeEventListener("resize", setInitialWidth);
     };
-  }, [user, supabase]);
+  }, []); // No dependencies, so this runs once on mount
+
+  useEffect(() => {
+    function onMount() {
+      getDevices();
+      const currentPath = window.location.pathname;
+      setActive(currentPath);
+
+      return () => {
+        // Cleanup function to remove listeners etc.
+      };
+    }
+
+    onMount();
+  }, [user, devices]);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -78,9 +82,8 @@ export function Sidebar({ className }) {
         <MenuIcon className="h-6 w-6 cursor-pointer" onClick={toggleSidebar} />
       </div>
       <div
-        className={`pb-12 h-screen z-10 ${
-          isOpen ? "ml-0 transition-all" : "-ml-64 transition-all"
-        } ${cn(className)}`}
+        className={`pb-12 h-screen z-10 ${isOpen ? "ml-0 transition-all" : "-ml-64 transition-all"
+          } ${cn(className)}`}
       >
         <div className="space-y-4 py-4 mt-14">
           <Logo />

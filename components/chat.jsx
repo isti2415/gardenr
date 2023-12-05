@@ -34,8 +34,6 @@ export function ChatBot() {
         : "https://gardenr.vercel.app/api/chat",
     });
 
-    console.log(Capacitor.getPlatform());
-
   const user = useUser();
 
   if (messages.length === 0) {

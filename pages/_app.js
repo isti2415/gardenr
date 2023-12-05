@@ -2,7 +2,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ModeToggle } from "@/components/theme-toggle-btn";
 import "@/styles/globals.css";
 import { createPagesBrowserClient } from "@supabase/auth-helpers-nextjs";
-import { SessionContextProvider } from "@supabase/auth-helpers-react";
+import { SessionContextProvider, useUser } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Urbanist } from "next/font/google";

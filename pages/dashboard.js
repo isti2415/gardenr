@@ -30,6 +30,7 @@ import Link from "next/link";
 import Head from "next/head";
 import { ChatBot } from "@/components/chat";
 import OpenAI from "openai";
+import useNotifications from "../components/useNotifications";
 
 const Dashboard = () => {
   const [devices, setDevices] = useState([]);
@@ -47,38 +48,80 @@ const Dashboard = () => {
     dangerouslyAllowBrowser: true,
   });
 
+  const { notificationCount } = useNotifications();
+
   async function getRandomTip() {
     const completion = await openai.completions.create({
       model: "gpt-3.5-turbo-instruct",
       prompt:
         `Generate a random gardening tip suitable for home, rooftop, or balcony gardening. Ensure that the tip is concise, providing valuable information related to plant selection, care, or innovative gardening techniques. Avoid repetition by checking previously generated tips to guarantee variety. Present the tip in a clear and standalone format, without any additional text or context. Aim for a tip that caters to different aspects of gardening, such as plant health, space optimization, or pest management. Keep the language simple and accessible, ensuring that the tips are easily understandable for a wide audience interested in home gardening. Do not wrap your response with "" or quotation marks.`,
       max_tokens: 128,
-      });
+    });
     console.log(completion);
     setRandomTip(completion.choices[0].text);
   }
 
-  const getDevices = async () => {
+  const getDevicesAndSensorData = async () => {
     try {
-      const { data, error } = await supabase
+      const { data: devicesData, error: devicesError } = await supabase
         .from("Device_Users")
         .select("*")
         .eq("user", user.id);
 
-      if (error) {
-        throw error;
+      if (devicesError) {
+        throw devicesError;
       }
 
-      setDevices(data);
+      const { data: sensorData, error: sensorError } = await supabase
+        .from("Current_Sensor_Values")
+        .select("*");
+
+      if (sensorError) {
+        throw sensorError;
+      }
+
+      // Merge devices and sensor data based on the "device" field
+      const mergedData = devicesData.map(device => {
+        const matchingSensorData = sensorData.find(sensor => sensor.device === device.device);
+        return {
+          ...device,
+          sensorData: matchingSensorData || null,
+        };
+      });
+
+      setDevices(mergedData);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching and combining data:", error);
     }
   };
 
   useEffect(() => {
-    getDevices();
-    getRandomTip();
+    const channel = supabase.channel('custom-all-channel')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', tables: ['Device_Users', 'Current_Sensor_Values'] },
+        (payload) => {
+          console.log('Change received!', payload);
+          getDevicesAndSensorData();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channel.unsubscribe();
+    };
+  }, [supabase, user]);
+
+  useEffect(() => {
+    // Fetch initial devices and sensor data
+    getDevicesAndSensorData();
   }, [user, supabase]);
+
+  console.log(devices);
+
+  useEffect(() => {
+    getRandomTip();
+  }, []);
 
   async function addDevice(event) {
     event.preventDefault();
@@ -271,7 +314,7 @@ const Dashboard = () => {
               <Bell className="h-8 w-8" />
               <div>
                 <AlertTitle>Notifications</AlertTitle>
-                <AlertDescription>You have 1 new notification</AlertDescription>
+                <AlertDescription>You have {notificationCount} new notification</AlertDescription>
               </div>
             </div>
             <div>
@@ -340,24 +383,28 @@ const Dashboard = () => {
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {devices.map((device) => (
-            <Card key={device}>
+            <Card key={device.device}>
               <CardHeader>
-                <CardTitle>{device.device_name}</CardTitle>
-                <CardDescription>Online</CardDescription>
+                <CardTitle className="text-4xl">{device.device_name}</CardTitle>
+                <CardDescription>{device.device}</CardDescription>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="flex flex-col">
-                    <label className="text-sm font-semibold">Device ID</label>
-                    <p className="text-sm">{device.device}</p>
-                  </div>
-                </div>
-              </CardContent>
+              {device.sensorData &&
+                <CardContent>
+                    <div className="grid grid-cols-2 gap-8 text-xl font-bol">
+                      <label >Temperature: {device.sensorData.temperature}°C</label>
+                      <label >Humidity: {device.sensorData.humidity}%</label>
+                      <label >Soil Moisture: {device.sensorData.moisture}%</label>
+                      <label >Water Pump: {device.sensorData.pump? "Turned On": "Turned Off"}</label>
+                    </div>
+                </CardContent>
+              }
               <CardFooter>
-                <Button>
-                  <Eye className="mr-2" />
-                  View
-                </Button>
+                <Link href={`/device/${device.device}`}>
+                  <Button>
+                    <Eye className="mr-2" />
+                    View
+                  </Button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
