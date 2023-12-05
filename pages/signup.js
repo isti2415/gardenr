@@ -127,15 +127,8 @@ export default function Signup() {
           <div className="relative z-20 flex items-center">
             <Logo />
           </div>
-          <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
-              <p className="text-lg">
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
-              </p>
-              <footer className="text-sm">Sofia Davis</footer>
-            </blockquote>
+          <div className="relative z-20 flex items-center">
+            <img src="/illustration.svg" alt="Illustration" className="mx-auto h-[28rem]" />
           </div>
         </div>
         <div className="lg:p-8 h-screen flex items-center justify-center">

@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Check, Cross, RefreshCcw, X } from "lucide-react";
 import { Table, TableBody, TableCell, TableCaption, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
-import { useEffect, useState } from "react";
+import { ChatBot } from "@/components/chat";
 import Head from "next/head";
 import useNotifications from "../components/useNotifications";
 
@@ -29,6 +29,9 @@ const Notifications = () => {
         <title>GardenR - Notifications</title>
       </Head>
       <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0 pb-8" />
+      <div className="fixed bottom-4 right-4 z-20">
+        <ChatBot />
+      </div>
       <div className="flex flex-col w-screen mt-4 gap-4 px-4">
         <div className="flex justify-between items-center">
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">Notifications</h1>

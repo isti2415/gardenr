@@ -38,7 +38,7 @@ export default function Home() {
         <Link
           href={"./login"}
           className={cn(
-            buttonVariants({  }),
+            buttonVariants({}),
             "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
@@ -49,20 +49,18 @@ export default function Home() {
         <div className="hidden lg:block relative h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 flex items-center">
-            <Logo/>
+            <Logo />
           </div>
-          <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
-              <p className="text-lg">
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
-              </p>
-              <footer className="text-sm">Sofia Davis</footer>
-            </blockquote>
+          <div className="relative z-20 flex items-center">
+            <img src="/illustration.svg" alt="Illustration" className="mx-auto h-[28rem]" />
           </div>
         </div>
-        <div className="lg:p-8 h-screen flex items-center justify-center"></div>
+        <div className="h-screen flex flex-col items-center justify-center gap-4">
+            <span className="text-4xl font-bold">From</span>
+            <Logo/>
+            <span className="text-4xl">For</span>
+            <Logo/>
+        </div>
       </div>
     </>
   );

@@ -8,6 +8,7 @@ import Head from "next/head";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardTitle, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
 import { AreaChart } from "@tremor/react";
+import {ChatBot} from "@/components/chat"
 
 export default function Device() {
     const router = useRouter();
@@ -126,6 +127,9 @@ export default function Device() {
                 <title>GardenR {device[0] ? " - " + device[0].device_name : ""}</title>
             </Head>
             <Sidebar className="w-[16rem] lg:relative fixed bg-background left-0 top-0 pb-8" />
+            <div className="fixed bottom-4 right-4 z-20">
+        <ChatBot />
+      </div>
             <div className="flex flex-col w-screen mt-4 gap-4 px-4">
                 <div className="flex justify-between items-center">
                     <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold ml-10">
