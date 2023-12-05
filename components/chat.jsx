@@ -24,6 +24,7 @@ import { Capacitor } from "@capacitor/core";
 const urbanist = Urbanist({
   subsets: ["latin"],
   variable: "--font-urbanist",
+  display: "swap"
 });
 
 export function ChatBot() {
