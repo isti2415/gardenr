@@ -138,7 +138,7 @@ export default function Device() {
 
   const mappedPumpData = sensorData.map(({ created_at, pump }) => ({
     Date: formatTimestamp(created_at),
-    Pump: pump,
+    Pump: pump ? 1 : 0,
   }));
 
   const CustomTooltip = ({ active, payload, label }) => {
