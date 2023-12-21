@@ -6,11 +6,12 @@ import { SessionContextProvider, useUser } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Urbanist } from "next/font/google";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const urbanist = Urbanist({
   subsets: ["latin"],
   variable: "--font-urbanist",
-  display: "swap"
+  display: "swap",
 });
 
 export default function App({ Component, pageProps }) {
@@ -27,13 +28,15 @@ export default function App({ Component, pageProps }) {
         enableSystem
         disableTransitionOnChange
       >
-        <main className={`${urbanist.variable} font-sans scroll-smooth`}>
-          <div className="fixed bottom-4 left-4 z-20">
-            <ModeToggle />
-          </div>
-          <Toaster />
-          <Component {...pageProps} className="font-sans" />
-        </main>
+        <TooltipProvider>
+          <main className={`${urbanist.variable} font-sans scroll-smooth`}>
+            <div className="fixed bottom-4 left-4 z-20">
+              <ModeToggle />
+            </div>
+            <Toaster />
+            <Component {...pageProps} className="font-sans" />
+          </main>
+        </TooltipProvider>
       </ThemeProvider>
     </SessionContextProvider>
   );
