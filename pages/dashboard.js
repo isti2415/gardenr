@@ -133,37 +133,13 @@ const Dashboard = () => {
     const password = event.target.password.value;
 
     const { data, error } = await supabase
-      .from("Devices")
-      .select("*")
-      .eq("id", device_id)
-      .limit(1);
-
-    if (error) {
+      .from("Device_Users")
+      .insert([
+        { device_name: device_name, device: device_id, user: user.id },
+      ])
+      .select();
+    if(error){
       console.log(error);
-      setIsLoading(false);
-    }
-
-    if (data.length == 1) {
-      if (data[0].password != password) {
-        console.log("Incorrect password");
-        setIsLoading(false);
-      } else {
-        const { data, error } = await supabase
-          .from("Device_Users")
-          .insert([
-            { device_name: device_name, device: device_id, user: user.id },
-          ])
-          .select();
-        if (error) {
-          console.log(error);
-          setIsLoading(false);
-        }
-        console.log(data);
-        setIsLoading(false);
-      }
-    } else {
-      console.log("Device not found");
-      setIsLoading(false);
     }
   }
 
@@ -390,12 +366,12 @@ const Dashboard = () => {
               </CardHeader>
               {device.sensorData &&
                 <CardContent>
-                    <div className="grid grid-cols-2 gap-8 text-xl font-bol">
-                      <label >Temperature: {device.sensorData.temperature}°C</label>
-                      <label >Humidity: {device.sensorData.humidity}%</label>
-                      <label >Soil Moisture: {device.sensorData.moisture}%</label>
-                      <label >Water Pump: {device.sensorData.pump? "Turned On": "Turned Off"}</label>
-                    </div>
+                  <div className="grid grid-cols-2 gap-8 text-xl font-bol">
+                    <label >Temperature: {device.sensorData.temperature}°C</label>
+                    <label >Humidity: {device.sensorData.humidity}%</label>
+                    <label >Soil Moisture: {device.sensorData.moisture}%</label>
+                    <label >Water Pump: {device.sensorData.pump ? "Turned On" : "Turned Off"}</label>
+                  </div>
                 </CardContent>
               }
               <CardFooter>
