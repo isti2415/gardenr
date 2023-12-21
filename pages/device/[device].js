@@ -238,7 +238,7 @@ export default function Device() {
                 stroke={theme === "dark" ? "#fff" : "#000"}
                 dataKey="Date"
               />
-              <YAxis stroke={theme === "dark" ? "#fff" : "#000"} tick={[0,1]} domain={[0,1]} />
+              <YAxis stroke={theme === "dark" ? "#fff" : "#000"} tick={[0,1]} tickCount={2}/>
               <Tooltip content={<PumpTooltip/>} />
             </LineChart>
           </ResponsiveContainer>
