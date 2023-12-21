@@ -159,8 +159,8 @@ export default function Device() {
     if (active && payload && payload.length) {
       return (
         <div className="bg-background rounded-md p-2">
-          <p className="text-sm text-[#0284c7]">{label}</p>
-          <p className="text-sm">
+          <p className="text-sm">{label}</p>
+          <p className="text-sm text-[#0284c7]">
             Pump Status : {payload[0].value ? "ON" : "OFF"}
           </p>
         </div>
