@@ -205,7 +205,7 @@ export default function Device() {
             </CardTitle>
           </CardHeader>
           <ResponsiveContainer width="100%" height={350} marg>
-            <LineChart data={mappedSensorData}>
+            <LineChart data={mappedSensorData.slice().reverse()}>
               <Line type="monotone" dataKey="Moisture" stroke="#ca8a04" />
               <Line type="monotone" dataKey="Humidity" stroke="#0284c7" />
               <Line type="monotone" dataKey="Temperature" stroke="#ef4444" />
@@ -232,7 +232,7 @@ export default function Device() {
             </CardTitle>
           </CardHeader>
           <ResponsiveContainer width="100%" height={350}>
-            <LineChart data={mappedPumpData}>
+            <LineChart data={mappedPumpData.slice().reverse()}>
               <Line type="monotone" dataKey="Pump" stroke="#0284c7" />
               <XAxis
                 stroke={theme === "dark" ? "#fff" : "#000"}
