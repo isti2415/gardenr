@@ -138,7 +138,7 @@ export default function Device() {
 
   const mappedPumpData = sensorData.map(({ created_at, pump }) => ({
     Date: formatTimestamp(created_at),
-    Pump: pump,
+    Pump: pump ? int(1) : int(0),
   }));
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -161,7 +161,7 @@ export default function Device() {
         <div className="bg-background rounded-md p-2">
           <p className="text-sm">{label}</p>
           <p className="text-sm">
-            Pump Status : {payload[0].value ? "ON" : "OFF"}
+            Pump Status : {payload[0].value == 1 ? "ON" : "OFF"}
           </p>
         </div>
       );
