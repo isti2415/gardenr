@@ -5,7 +5,8 @@
 #include <ESP32_Supabase.h>
 #include <ArduinoJson.h>
 #include <WiFiManager.h>
-#include <DHT11.h>
+#include "Adafruit_Sensor.h"
+#include "DHT.h"
 
 Supabase db;
 
@@ -17,11 +18,13 @@ struct DHTData {
 String supabase_url = "https://aiuafwvpkxcewxkpsiyw.supabase.co";
 String anon_key = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFpdWFmd3Zwa3hjZXd4a3BzaXl3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTg4NjE5OTYsImV4cCI6MjAxNDQzNzk5Nn0.Urnsw5pvePTPEJJpovap7xA6wYcXOWQC8dEUWvWwMvM";
 
-const int ledPin = 5;  // Define the pin for the LED
-const int dhtPin = 4;
+const int ledPin = 0;  // Define the pin for the LED
+const int dhtPin = 2;
 const int moisturePin = A0;
 
-DHT11 dht11(dhtPin);
+#define DHTTYPE DHT11
+
+DHT dht(dhtPin, DHTTYPE);
 
 String password = "";
 
@@ -40,6 +43,7 @@ void setup() {
   Serial.begin(9600);
   pinMode(ledPin, OUTPUT);
   pinMode(moisturePin, INPUT);
+  dht.begin();
   deviceID = createDeviceID();
   const char* charDeviceID = deviceID.c_str();
   WiFiManager wifimanager;
@@ -52,15 +56,18 @@ void setup() {
 
 void loop() {
   // Simulating sensor readings (replace with actual sensor readings)
-  int simulatedHumidity = random(25, 75);
-  int simulatedTemperature = random(20, 35);
-  int simulatedSoilMoisture = random(50, 100);
+  float simulatedHumidity = dht.readHumidity();
+  float simulatedTemperature = dht.readTemperature();
+  float simulatedSoilMoisture = moisture();
+
+  Serial.println(simulatedTemperature);
+  Serial.println(simulatedHumidity);
 
   // Call the function with simulated sensor readings
   checkAndNotify(simulatedHumidity, simulatedTemperature, simulatedSoilMoisture, getPumpStatus(), deviceID);
   digitalWrite(ledPin, getPumpStatus());
   uploadSensorData();
-  delay(60000);
+  delay(6000);
 }
 
 String createDeviceID() {
@@ -125,7 +132,7 @@ bool registerDevice() {
   }
 }
 
-void checkAndNotify(int humidity, int temperature, int soilMoisture, bool pumpStatus, String deviceID) {
+void checkAndNotify(float humidity, float temperature, float soilMoisture, bool pumpStatus, String deviceID) {
   // Check Humidity
   if (humidity > humidityThresholdHigh) {
     logNotification(deviceID, "High Humidity", "Alert", "High humidity detected. Ensure proper ventilation.", "Humidity");
@@ -200,66 +207,30 @@ bool getPumpStatus() {
   return false;
 }
 
-
-DHTData dht() {
-  DHTData data;
-
-  data.humidity = dht11.readHumidity();
-  data.temperature = dht11.readTemperature();
-
-  if (data.humidity != DHT11::ERROR_CHECKSUM && data.humidity != DHT11::ERROR_TIMEOUT) {
-    Serial.print("Humidity: ");
-    Serial.print(data.humidity);
-    Serial.println("%");
-  } else {
-    Serial.println(DHT11::getErrorString(data.humidity));
-    data.humidity = random(25, 75);
-  }
-
-  if (data.temperature != DHT11::ERROR_CHECKSUM && data.temperature != DHT11::ERROR_TIMEOUT) {
-    Serial.print("Temperature: ");
-    Serial.print(data.temperature);
-    Serial.println("°C");
-  } else {
-    Serial.println(DHT11::getErrorString(data.temperature));
-    data.temperature = random(20,35);
-  }
-
-  return data;
-}
-
 float moisture() {
   float soilMoistureValue = analogRead(moisturePin);
-  float soilMoisturePercent = map(soilMoistureValue, 790, 390, 0, 100);
-  if(soilMoisturePercent>100){
-    return random(50, 100);
-  }
-  else if(soilMoisturePercent<0){
-    return random(50, 100);
-  }
-  else{
-    return random(50, 100);
-  }
+  float soilMoisturePercent = map(soilMoistureValue, 1023, 300, 0, 100);
+  Serial.println(soilMoisturePercent);
+  return soilMoisturePercent;
 }
 
 bool uploadSensorData() {
-  DHTData DHTData = dht();
   String table = "Sensors";
   DynamicJsonDocument sensor(1024);
   bool pump = digitalRead(ledPin);
   sensor["device"] = deviceID;
-  sensor["humidity"] = DHTData.humidity;
-  sensor["temperature"] = DHTData.temperature;
+  sensor["humidity"] = dht.readHumidity();
+  sensor["temperature"] = dht.readTemperature();
   sensor["moisture"] = moisture();
   sensor["pump"] = pump;
-  String JSON;
-  serializeJson(sensor, JSON);
+  String sensorJSON;
+  serializeJson(sensor, sensorJSON);
 
-  int currentValues = db.update("Current_Sensor_Values").eq("device", deviceID).doUpdate(JSON);
+  int currentValues = db.update("Current_Sensor_Values").eq("device", deviceID).doUpdate(sensorJSON);
 
   bool upsert = false;
 
-  int result = db.insert(table, JSON, upsert);
+  int result = db.insert(table, sensorJSON, upsert);
   db.urlQuery_reset();
 
   Serial.println(result);

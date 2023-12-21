@@ -61,7 +61,7 @@ export default function Device() {
       const { data, error } = await supabase
         .from("Sensors")
         .select("*")
-        .order("created_at", { ascending: true })
+        .order("created_at", { ascending: false })
         .eq("device", deviceID)
         .limit(10);
       if (error) {
