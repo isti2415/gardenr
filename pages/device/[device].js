@@ -146,9 +146,9 @@ export default function Device() {
       return (
         <div className="bg-background rounded-md p-2">
           <p className="text-sm">{label}</p>
-          <p className="text-sm">Soil Moisture : {payload[0].value}%</p>
-          <p className="text-sm">Humidity : {payload[1].value}%</p>
-          <p className="text-sm">Temperature : {payload[2].value}°C</p>
+          <p className="text-sm text-[#ca8a04]">Soil Moisture : {payload[0].value}%</p>
+          <p className="text-sm text-[#0284c7]">Humidity : {payload[1].value}%</p>
+          <p className="text-sm text-[#ef4444]">Temperature : {payload[2].value}°C</p>
         </div>
       );
     }
@@ -159,7 +159,7 @@ export default function Device() {
     if (active && payload && payload.length) {
       return (
         <div className="bg-background rounded-md p-2">
-          <p className="text-sm">{label}</p>
+          <p className="text-sm text-[#0284c7]">{label}</p>
           <p className="text-sm">
             Pump Status : {payload[0].value ? "ON" : "OFF"}
           </p>
