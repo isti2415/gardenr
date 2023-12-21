@@ -138,7 +138,7 @@ export default function Device() {
 
   const mappedPumpData = sensorData.map(({ created_at, pump }) => ({
     Date: formatTimestamp(created_at),
-    Pump: pump === "true" ? "ON" : "OFF",
+    Pump: pump === "true" ? 1 : 0,
   }));
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -238,7 +238,7 @@ export default function Device() {
                 stroke={theme === "dark" ? "#fff" : "#000"}
                 dataKey="Date"
               />
-              <YAxis stroke={theme === "dark" ? "#fff" : "#000"} tick={["OFF","ON"]} tickCount={2}/>
+              <YAxis stroke={theme === "dark" ? "#fff" : "#000"} tick={["off","on"]} tickCount={2}/>
               <Tooltip content={<PumpTooltip/>} />
             </LineChart>
           </ResponsiveContainer>
